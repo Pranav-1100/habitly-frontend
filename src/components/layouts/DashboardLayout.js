@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, Calendar, CheckSquare, Target, Settings, Bell } from 'lucide-react';
+import { Home, Calendar, CheckSquare, Target, Settings, Bell,User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ErrorBoundary from '../ErrorBoundary';
@@ -47,23 +47,23 @@ export default function DashboardLayout({ children }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="border-b border-gray-200">
-          <div className="flex items-center justify-between px-8 py-4">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {navItems.find(item => item.href === pathname)?.name || 'Dashboard'}
-            </h2>
-            <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
-                <Bell className="w-6 h-6" />
-              </button>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600"></span>
-                </div>
-                <span className="font-medium"></span>
-              </div>
-            </div>
-          </div>
-        </header>
+  <div className="flex items-center justify-between px-8 py-4">
+    <h2 className="text-xl font-semibold text-gray-800">
+      {navItems.find(item => item.href === pathname)?.name || 'Dashboard'}
+    </h2>
+    <div className="flex items-center gap-4">
+      <button className="p-2 text-gray-400 hover:text-gray-600">
+        <Bell className="w-6 h-6" />
+      </button>
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+          <User className="w-5 h-5" />
+        </div>
+        <span className="font-medium"></span>
+      </div>
+    </div>
+  </div>
+</header>
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto bg-white">

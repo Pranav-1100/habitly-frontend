@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Home, Calendar, CheckSquare, Target, Settings, Bell } from 'lucide-react';
+import { Home, Calendar, CheckSquare, Target, Settings, Bell, User } from 'lucide-react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { analyticsApi, tasksApi, habitsApi } from '@/lib/api';
 import Link from 'next/link';
@@ -125,11 +125,11 @@ const DashboardPage = () => {
                 <Bell className="w-6 h-6" />
               </button>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600"></span>
-                </div>
-                <span className="font-medium"></span>
-              </div>
+        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+          <User className="w-5 h-5" />
+        </div>
+        <span className="font-medium"></span>
+      </div>
             </div>
           </div>
         </header>

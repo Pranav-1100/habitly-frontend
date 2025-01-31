@@ -87,7 +87,7 @@ const AuthForm = ({ defaultMode = 'login' }) => {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="block w-full mt-2 pb-2 text-lg text-center border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
+                        className="block w-full mt-2 pb-2 text-lg text-center text-black border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
                         required
                       />
                     </label>
@@ -99,7 +99,7 @@ const AuthForm = ({ defaultMode = 'login' }) => {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="block w-full mt-2 pb-2 text-lg text-center border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
+                        className="block w-full mt-2 pb-2 text-lg text-center text-black border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
                         required
                       />
                     </label>
@@ -152,7 +152,7 @@ const AuthForm = ({ defaultMode = 'login' }) => {
     name="username"
     value={formData.username}
     onChange={handleInputChange}
-    className="block w-full mt-2 pb-2 text-lg text-center border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
+    className="block w-full mt-2 pb-2 text-lg text-center text-black border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
     required
   />
 </label>
@@ -164,7 +164,7 @@ const AuthForm = ({ defaultMode = 'login' }) => {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="block w-full mt-2 pb-2 text-lg text-center border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
+                        className="block w-full mt-2 pb-2 text-lg text-center text-black border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
                         required
                       />
                     </label>
@@ -176,7 +176,7 @@ const AuthForm = ({ defaultMode = 'login' }) => {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        className="block w-full mt-2 pb-2 text-lg text-center border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
+                        className="block w-full mt-2 pb-2 text-lg text-center text-black border-b-2 border-gray-300 focus:border-indigo-500 transition-colors focus:outline-none"
                         required
                       />
                     </label>
