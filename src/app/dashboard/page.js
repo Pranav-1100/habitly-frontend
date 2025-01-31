@@ -165,7 +165,7 @@ const DashboardPage = () => {
             {/* Third panel - Overview */}
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">Today's Overview</h3>
+              <h3 className="text-lg font-semibold text-gray-800">Today&apos;s Overview</h3>
               </div>
               <div className="space-y-4">
                 <div>
@@ -204,7 +204,7 @@ const DashboardPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Today's Tasks */}
             <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Today's Tasks</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Today&apos;s Tasks</h3>
               <div className="space-y-4">
                 {tasks.map(task => (
                   <div key={task.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -240,7 +240,7 @@ const DashboardPage = () => {
 
             {/* Today's Habits */}
             <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Today's Habits</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Today&apos;s Habits</h3>
               <div className="space-y-4">
                 {habits.map(habit => (
                   <div key={habit.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
