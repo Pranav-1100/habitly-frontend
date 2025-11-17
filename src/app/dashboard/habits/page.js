@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Search, Layout, LayoutGrid } from 'lucide-react';
+import { Plus, Search, Layout, LayoutGrid, Edit2, Trash2 } from 'lucide-react';
 import { habitsApi } from '@/lib/api';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import HabitModal from '@/components/habits/HabitModal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function HabitsPage() {
@@ -14,6 +15,9 @@ export default function HabitsPage() {
   const [selectedHabit, setSelectedHabit] = useState(null);
   const [search, setSearch] = useState('');
   const [view, setView] = useState('grid'); // grid or list
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [habitToDelete, setHabitToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     fetchHabits();
@@ -41,11 +45,36 @@ export default function HabitsPage() {
 
   const handleCreateHabit = async (data) => {
     try {
-      await habitsApi.create(data);
+      if (selectedHabit) {
+        // Update existing habit
+        await habitsApi.update(selectedHabit.id, data);
+      } else {
+        // Create new habit
+        await habitsApi.create(data);
+      }
       await fetchHabits();
       setShowNewHabitModal(false);
+      setSelectedHabit(null);
     } catch (error) {
-      console.error('Error creating habit:', error);
+      console.error('Error saving habit:', error);
+      throw error;
+    }
+  };
+
+  const handleDeleteHabit = async () => {
+    if (!habitToDelete) return;
+
+    setDeleteLoading(true);
+    try {
+      await habitsApi.delete(habitToDelete.id);
+      await fetchHabits();
+      setShowDeleteConfirm(false);
+      setHabitToDelete(null);
+    } catch (error) {
+      console.error('Error deleting habit:', error);
+      alert('Failed to delete habit. Please try again.');
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -136,15 +165,26 @@ export default function HabitsPage() {
                   <p className="text-sm text-gray-600">Frequency: {habit.frequency}</p>
                   <p className="text-sm text-gray-600">{habit.streak} day streak</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={() => {
                       setSelectedHabit(habit);
                       setShowNewHabitModal(true);
                     }}
-                    className="text-gray-600 hover:text-indigo-600"
+                    className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+                    title="Edit habit"
                   >
-                    Edit
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setHabitToDelete(habit);
+                      setShowDeleteConfirm(true);
+                    }}
+                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                    title="Delete habit"
+                  >
+                    <Trash2 className="w-4 h-4" />
                   </button>
                   <input
                     type="checkbox"
@@ -191,15 +231,28 @@ export default function HabitsPage() {
                     }}
                   />
                 </div>
-                <button
-                  onClick={() => {
-                    setSelectedHabit(habit);
-                    setShowNewHabitModal(true);
-                  }}
-                  className="text-gray-600 hover:text-indigo-600"
-                >
-                  Edit
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setSelectedHabit(habit);
+                      setShowNewHabitModal(true);
+                    }}
+                    className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+                    title="Edit habit"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setHabitToDelete(habit);
+                      setShowDeleteConfirm(true);
+                    }}
+                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                    title="Delete habit"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -218,6 +271,22 @@ export default function HabitsPage() {
           initialData={selectedHabit}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setHabitToDelete(null);
+        }}
+        onConfirm={handleDeleteHabit}
+        title="Delete Habit"
+        message={`Are you sure you want to delete "${habitToDelete?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={deleteLoading}
+      />
     </div>
   );
 }

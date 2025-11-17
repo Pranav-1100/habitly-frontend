@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Filter, Search } from 'lucide-react';
+import { Plus, Filter, Search, Edit2, Trash2 } from 'lucide-react';
 import { tasksApi } from '@/lib/api';
 import TaskModal from '@/components/tasks/TaskModal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState([]);
@@ -12,6 +13,9 @@ export default function TasksPage() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [selectedTask, setSelectedTask] = useState(null); // For editing
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     fetchTasks();
@@ -30,11 +34,36 @@ export default function TasksPage() {
 
   const handleCreateTask = async (taskData) => {
     try {
-      await tasksApi.create(taskData);
+      if (selectedTask) {
+        // Update existing task
+        await tasksApi.update(selectedTask.id, taskData);
+      } else {
+        // Create new task
+        await tasksApi.create(taskData);
+      }
       await fetchTasks();
       setShowNewTaskModal(false);
+      setSelectedTask(null);
     } catch (error) {
-      console.error('Error creating task:', error);
+      console.error('Error saving task:', error);
+      throw error;
+    }
+  };
+
+  const handleDeleteTask = async () => {
+    if (!taskToDelete) return;
+
+    setDeleteLoading(true);
+    try {
+      await tasksApi.delete(taskToDelete.id);
+      await fetchTasks();
+      setShowDeleteConfirm(false);
+      setTaskToDelete(null);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      alert('Failed to delete task. Please try again.');
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -147,9 +176,20 @@ export default function TasksPage() {
                       setSelectedTask(task);
                       setShowNewTaskModal(true);
                     }}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+                    title="Edit task"
                   >
-                    Edit
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setTaskToDelete(task);
+                      setShowDeleteConfirm(true);
+                    }}
+                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                    title="Delete task"
+                  >
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -170,6 +210,22 @@ export default function TasksPage() {
           initialData={selectedTask}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setTaskToDelete(null);
+        }}
+        onConfirm={handleDeleteTask}
+        title="Delete Task"
+        message={`Are you sure you want to delete "${taskToDelete?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={deleteLoading}
+      />
     </div>
   );
 }
