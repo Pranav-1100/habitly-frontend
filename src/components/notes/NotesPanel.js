@@ -24,7 +24,7 @@ export default function NotesPanel({ entityType, entityId, entityTitle }) {
   const fetchNotes = async () => {
     try {
       const response = await notesApi.getByEntity(entityType, entityId);
-      setNotes(response.data || []);
+      setNotes(response.data.notes || []);
     } catch (error) {
       console.error('Error fetching notes:', error);
     } finally {

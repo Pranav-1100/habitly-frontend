@@ -27,7 +27,7 @@ export default function TimeTracker({ entityType, entityId, entityTitle }) {
   const checkActiveTimer = async () => {
     try {
       const response = await timeApi.getActive();
-      const active = response.data?.find(
+      const active = response.data.activeLogs?.find(
         (t) => t.entity_type === entityType && t.entity_id === entityId
       );
       setActiveTimer(active || null);
